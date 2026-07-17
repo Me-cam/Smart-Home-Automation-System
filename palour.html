@@ -1,0 +1,333 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Zang's SmartHome Sytem</title>
+   
+    <link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon" />
+    <title>palour</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./css/all.min.css" />
+    <link rel="stylesheet" href="./css/bootstrap.min.css" />
+    <link rel="stylesheet" href="./css/style.css" />
+    <style>
+        body { background-color: #f0f2f5; font-family: 'Segoe UI', sans-serif; }
+        .card { border: none; border-radius: 15px; transition: transform 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .card:hover { transform: translateY(-5px); }
+        
+        /* Status Colors */
+        .status-on { color: #2ecc71; font-weight: bold; }
+        .status-off { color: #e74c3c; font-weight: bold; }
+        .alert-active { background-color: #ffeded; border: 1px solid #ff4d4d; animation: pulse 2s infinite; }
+        
+        /* Fan Animation */
+        .fan-icon { transition: transform 0.5s; }
+        .spinning { animation: spin 1s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
+
+        .sensor-value { font-size: 1.5rem; font-weight: bold; color: #57a2ee; }
+        .header-bg { background: linear-gradient(135deg, #73a2d1 0%, #57a2ee 100%); color: rgb(155, 119, 119); padding: 20px 0; border-radius: 0 0 25px 25px; margin-bottom: 30px; }
+
+        .container{
+    background-color: #5a52c7;
+    height: 1000px;
+}
+.navbar {
+    padding: 1rem 0;
+}
+
+.stat-card {
+    border-radius: 15px;
+    background: #ffffff;
+}
+
+.device-card {
+    border-radius: 18px;
+    transition: transform 0.2s ease;
+}
+
+.device-card:active {
+    transform: scale(0.98);
+}
+
+.icon-box {
+    width: 45px;
+    height: 45px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+
+/* Custom Switch Styling */
+.form-check-input {
+    width: 2.5em;
+    height: 1.25em;
+    cursor: pointer;
+}
+
+/* Mobile adjustments */
+@media (max-width: 576px) {
+    header h2 {
+        font-size: 1.5rem;
+    }
+}
+nav{
+    background-color: #5a52c7;
+}
+h3{
+    text-align: center;
+}
+    </style>
+</head>
+<script type="text/javascript">
+    var rqst = new XMLHttpRequest();
+</script>
+<body>
+
+      <nav class="navbar navbar-expand-lg navbar-dark  sticky-top">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold" href="index.html"><i class="bi bi-house-heart-fill me-2"></i>CleverHome</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link " href="index.html"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link" href="room.html"><i class="bi bi-lightbulb"></i> Rooms</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="palour.html"><i class="bi bi-shield-lock"></i> Palour</a></li>
+                    <li class="nav-item"><a class="nav-link" href="security.html"><i class="bi bi-gear"></i> Security</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+<br>
+<h3>Automate your confort, Save on your energy</h3>
+<br>
+<div class="container">
+    <h5 class="mb-3 text-light">Environmental Sensors</h5>
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-md-3">
+            <div class="card p-3 text-center">
+                <span class="material-icons text-primary">thermostat</span>
+                <div class="text-muted small">Temp</div>
+                <div class="sensor-value"><span id="temp-val">00</span>°C</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card p-3 text-center">
+                <span class="material-icons text-info">water_drop</span>
+                <div class="text-muted small">Humidity</div>
+                <div class="sensor-value"><span id="hum-val">00</span>%</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div id="fire-card" class="card p-3 text-center">
+                <span class="material-icons text-danger">local_fire_department</span>
+                <div class="text-muted small">Fire Sensor</div>
+                <div id="fire-status" class="status-off">SAFE</div>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="card p-3 text-center">
+                <span class="material-icons text-warning">gas_meter</span>
+                <div class="text-muted small">Gas Leak</div>
+                <div class="status-off">NONE</div>
+            </div>
+        </div>
+    </div>
+
+    <h5 class="mb-3 text-light">Appliances</h5>
+    <div class="row g-3">
+        <div class="col-12 col-md-6">
+            <div class="card p-3 d-flex flex-row align-items-center justify-content-between">
+                <div class="d-flex align-items-center">
+                    <span id="fan-icon" class="material-icons me-3 fs-1">toys</span>
+                    <div>
+                        <h6 class="mb-0">Ceiling Fan</h6>
+                        <small id="fan-text" class="text-muted">Status: Off</small>
+                    </div>
+                </div>
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="fanSwitch" onchange="toggleFan()">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6">
+            <div class="card p-3 d-flex flex-row align-items-center justify-content-between">
+                <div class="d-flex align-items-center">
+                    <span class="material-icons me-3 fs-1 text-info">ac_unit</span>
+                    <div>
+                        <h6 class="mb-0">Air Conditioner</h6>
+                        <small id="ac-text" class="text-muted">Status: Off</small>
+                    </div>
+                </div>
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" id="acSwitch" onchange="toggleAC()">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6">
+            <div class="card p-3 d-flex flex-row align-items-center justify-content-between">
+                <div class="d-flex align-items-center">
+                    <span id="lamp-icon" class="material-icons me-3 fs-1">lightbulb</span>
+                    <div>
+                        <h6 class="mb-0">Main Lights</h6>
+                        <small id="lamp-text" class="text-muted">Status: Off</small>
+                    </div>
+                </div>
+                <div class="form-check form-switch">
+                    <input class="form-check-input" type="checkbox" onchange="toggleLights(this)">
+                </div>
+            </div>
+        </div>
+
+<div class="col-12 col-md-6">
+            <div class="card p-3 d-flex flex-row align-items-center justify-content-between">
+                <div class="d-flex align-items-center">
+                    <span id="lamp-icon" class="material-icons me-3 fs-1">lightbulb</span>
+                    <div>
+                        <h6 class="mb-0">Main Lights</h6>
+                        <small id="lamp-text" class="text-muted">Status: Off</small>
+                    </div>
+                </div>
+                <div class="form-check form-switch">
+                
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6">
+            <div class="card p-3 d-flex flex-row align-items-center justify-content-between">
+                <div class="d-flex align-items-center">
+                <span class="material-icons me-2">directions_run</span>
+                    <div>
+                        <h6 class="mb-0">Palour motion detected</h6>
+                   
+                    </div>
+                </div>
+                <div class="form-check form-switch">
+                   
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-md-6">
+            <div class="card p-3 d-flex flex-row align-items-center justify-content-between">
+                <div class="d-flex align-items-center">
+                      <span class="material-icons me-2">directions_run</span>
+                    <div>
+                        <h6 class="mb-0">Back Yard motion detected</h6>
+                      
+                    </div>
+                </div>
+                <di
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-12 col-md-6">
+            <div class="card p-3 d-flex flex-row align-items-center justify-content-between">
+                <div class="d-flex align-items-center">
+                       <span class="material-icons me-2">directions_run</span>
+                    <div>
+                        <h6 class="mb-0">Front Yard motion detected</h6>
+                          
+                    </div>
+                </div>
+                <div class="form-check form-switch">
+                    
+                </div>
+            </div>
+        </div>
+        <div class="col-12 col-md-6">
+            <div class="card p-3 d-flex flex-row align-items-center justify-content-between">
+                <div class="d-flex align-items-center">
+                    <span class="material-icons me-3 fs-1 text-primary">notifications</span>
+                    <div>
+                        <h6 class="mb-0">Ring Bell</h6>
+                        <small class="text-muted">Last ring: 2h ago</small>
+                    </div>
+                </div>
+                <button class="btn btn-outline-primary btn-sm" onclick="ringBell()">Test Bell</button>
+            </div>
+        </div>
+    </div>
+
+
+    
+
+</div>
+
+<script>
+    
+    function toggleFan() {
+        const isChecked = document.getElementById('fanSwitch').checked;
+        const icon = document.getElementById('fan-icon');
+        const text = document.getElementById('fan-text');
+        
+        if(isChecked) {
+            icon.classList.add('spinning', 'text-primary');
+            text.innerText = "Status: High Speed";
+        } else {
+            icon.classList.remove('spinning', 'text-primary');
+            text.innerText = "Status: Off";
+        }
+    }
+
+    function toggleAC() {
+        const isChecked = document.getElementById('acSwitch').checked;
+        document.getElementById('ac-text').innerText = isChecked ? "Status: AC NOT CONNECTED" : "Status: Off";
+    }
+
+    function toggleLights(btn) {
+        //send request to hardware
+        const url = "192.168.137.152/"
+        xhr.open("GET", url, true);
+        xhr.send();
+        //.............................................
+        const icon = document.getElementById('lamp-icon');
+        if(btn.checked) {
+            icon.classList.add('text-warning');
+            document.getElementById('lamp-text').innerText = "Status: On";
+        } else {
+            icon.classList.remove('text-warning');
+            document.getElementById('lamp-text').innerText = "Status: Off";
+        }
+    }
+
+    function ringBell() {
+        alert("Ding Dong! Doorbell activated.");
+    }
+
+    // Simulate Sensor Data Updates
+    setInterval(() => {
+        // Random Temp/Humidity
+        //document.getElementById('temp-val').innerText = (22 + Math.random() * 3).toFixed(1);
+        //document.getElementById('hum-val').innerText = (40 + Math.random() * 10).toFixed(0);
+        
+        // Random Motion Trigger (10% chance)
+        if(Math.random() > 0.9) {
+            document.getElementById('motion-alert').classList.remove('d-none');
+            setTimeout(() => {
+                document.getElementById('motion-alert').classList.add('d-none');
+            }, 3000);
+        }
+    }, 5000);
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

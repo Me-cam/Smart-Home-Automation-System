@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon" />
+    <title>Sign up</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./css/all.min.css" />
+    <link rel="stylesheet" href="./css/bootstrap.min.css" />
+    <link rel="stylesheet" href="./css/style.css" />
+
+      <style>
+        body { background-color: #f0f2f5; font-family: 'Segoe UI', sans-serif; }
+        .card { border: none; border-radius: 15px; transition: transform 0.2s; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .card:hover { transform: translateY(-5px); }
+        
+        /* Status Colors */
+        .status-on { color: #2ecc71; font-weight: bold; }
+        .status-off { color: #e74c3c; font-weight: bold; }
+        .alert-active { background-color: #ffeded; border: 1px solid #ff4d4d; animation: pulse 2s infinite; }
+        
+        /* Fan Animation */
+        .fan-icon { transition: transform 0.5s; }
+        .spinning { animation: spin 1s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.7; } 100% { opacity: 1; } }
+
+        .sensor-value { font-size: 1.5rem; font-weight: bold; color: #57a2ee; }
+        .header-bg { background: linear-gradient(135deg, #93f3ce 0%, #2d83da 100%); color: rgb(155, 119, 119); padding: 20px 0; border-radius: 0 0 25px 25px; margin-bottom: 30px; }
+
+
+.navbar {
+    padding: 1rem 0;
+}
+
+.stat-card {
+    border-radius: 15px;
+    background: #ffffff;
+}
+
+.device-card {
+    border-radius: 18px;
+    transition: transform 0.2s ease;
+}
+
+.device-card:active {
+    transform: scale(0.98);
+}
+
+.icon-box {
+    width: 45px;
+    height: 45px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+
+/* Custom Switch Styling */
+.form-check-input {
+    width: 2.5em;
+    height: 1.25em;
+    cursor: pointer;
+}
+
+/* Mobile adjustments */
+@media (max-width: 576px) {
+    header h2 {
+        font-size: 1.5rem;
+    }
+}
+nav{
+    background-color: #82bfe6;
+}
+
+main {
+  min-height: 100vh;
+  background-image: url(Sandton-hi-res-NVDM-4-1024x609.webp);
+  background-size: cover;
+  background-position: center;
+}
+.boxContainer{
+    background-color: #a4cde6;
+}
+
+    </style>
+  </head>
+  <body>
+  <nav class="navbar navbar-expand-lg navbar-dark  sticky-top">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold text-primary" href="index.html"><i class="bi bi-house-heart-fill me-2"></i>CleverHome</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link text-primary active" href="index.html"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="room.html"><i class="bi bi-lightbulb"></i> Rooms</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="palour.html"><i class="bi bi-shield-lock"></i> Palour</a></li>
+                    <li class="nav-item"><a class="nav-link text-primary" href="security.html"><i class="bi bi-gear"></i> Security</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="py-5">
+      <section class="py-5">
+        <div class="container">
+          <div
+            id="signupBox"
+            class="boxContainer text-center p-3 p-md-4 rounded-2"
+          >
+            <h1 class="mt-5">Sign Up</h1>
+            <p class="text-primary mb-4">Quick and easy</p>
+            <div class="inputsForm">
+              <input
+                type="text"
+                id="signupName"
+                class="form-control"
+                placeholder="Enter your name"
+                required
+              />
+              <input
+                type="email"
+                id="signupEmail"
+                class="form-control mt-3"
+                placeholder="Enter your email"
+                required
+              />
+              <input
+                type="password"
+                id="signupPassword"
+                class="form-control mt-3"
+                placeholder="Enter your password"
+                required
+              />
+              <button id="signupBtn" class="btn btn-main my-4 w-100">
+                Sign up
+              </button>
+              <div class="loginText d-flex justify-content-center gap-2 mt-1">
+                <p>Already have an account?</p>
+                <a class="text-decoration-none" id="loginAnchor">Log in</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="./js/bootstrap.bundle.js"></script>
+    <script src="./js/sweetalert.min.js"></script>
+    <script src="./js/signup.js"></script>
+  </body>
+</html>
